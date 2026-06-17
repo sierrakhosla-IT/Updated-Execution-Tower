@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Execution Tower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient-layer" aria-hidden="true"></div>
+  <div class="app cockpit">
+    <div class="cockpit-shell">
+
+      <!-- ZONE 1 — TOP CONTROL BAND -->
+      <div class="zone zone-top" id="zone-top">
+        <header class="topbar glass-panel depth-2 system-layer">
+          <div class="topbar-left">
+            <h1 class="logo">Execution Tower<span class="logo-sphere"></span></h1>
+            <time class="date-pill meta-secondary" id="date-display"></time>
+          </div>
+          <div class="topbar-right">
+            <span class="save-pill meta-secondary" id="save-status" aria-live="polite">Ready</span>
+            <button type="button" class="btn-pill btn-soft" id="btn-new-day">New Day</button>
+            <button type="button" class="btn-pill btn-ghost" id="btn-clean">Clean Session</button>
+          </div>
+        </header>
+
+        <div id="exec-focus-mount" class="exec-focus-mount"></div>
+
+        <div class="zone zone-decision execution-layer up-next" id="zone-decision">
+          <div id="exec-upnext-mount" class="exec-upnext-mount"></div>
+        </div>
+
+        <div class="top-band-row">
+          <section class="glass-panel depth-2 system-layer" id="section-targets">
+            <div class="section-head">
+              <h2 class="section-title">Daily Targets</h2>
+              <span class="cap-badge meta-secondary">2 max</span>
+            </div>
+            <div class="targets-grid" id="targets-list"></div>
+          </section>
+
+          <section class="glass-panel depth-1 section-start system-layer" id="section-start">
+            <div class="section-head">
+              <h2 class="section-title">Start <span class="section-sub meta-secondary">10–15 min</span></h2>
+            </div>
+            <div class="start-checks">
+              <label class="clay-check">
+                <input type="checkbox" id="chk-targets-locked">
+                <span class="check-sphere"></span>
+                <span>Targets locked</span>
+              </label>
+              <label class="clay-check">
+                <input type="checkbox" id="chk-no-reacting">
+                <span class="check-sphere"></span>
+                <span>No reacting mode</span>
+              </label>
+            </div>
+            <div class="notes-wrap">
+              <label class="field-label" for="work-notes">Work Notes</label>
+              <textarea id="work-notes" class="clay-textarea" rows="2" spellcheck="false" placeholder="Scratchpad…"></textarea>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- ZONE 2 — EXECUTION CORE -->
+      <div class="zone zone-core execution-layer queue" id="zone-core">
+        <section class="glass-panel depth-1 blocks-shell blocks" id="section-blocks">
+          <div class="section-head section-head-inline">
+            <h2 class="section-title">Execution Blocks</h2>
+            <span class="task-counter meta-secondary" id="task-counter">0 / 6 tasks</span>
+          </div>
+
+          <div class="blocks-grid queue">
+            <article class="block glass-panel depth-1 block-peach" data-block="block1">
+              <header class="block-head">
+                <span class="block-label">Block 1</span>
+                <span class="block-time meta-secondary">45 min</span>
+              </header>
+              <div class="block-cols">
+                <div class="task-lane" data-lane="pushing">
+                  <h3 class="lane-label">Pushing <span class="lane-cap meta-secondary">2 max</span></h3>
+                  <div class="task-list scroll-panel pending" id="b1-pushing"></div>
+                </div>
+                <div class="task-lane" data-lane="internal">
+                  <h3 class="lane-label">Support Work <span class="lane-cap meta-secondary">non-execution tasks</span></h3>
+                  <div class="task-list scroll-panel pending" id="b1-internal"></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="block glass-panel depth-1 block-mint" data-block="block2">
+              <header class="block-head">
+                <span class="block-label">Block 2</span>
+                <span class="block-time meta-secondary">45 min</span>
+              </header>
+              <div class="block-cols">
+                <div class="task-lane" data-lane="pushing">
+                  <h3 class="lane-label">Pushing <span class="lane-cap meta-secondary">2 max</span></h3>
+                  <div class="task-list scroll-panel pending" id="b2-pushing"></div>
+                </div>
+                <div class="task-lane" data-lane="internal">
+                  <h3 class="lane-label">Support Work <span class="lane-cap meta-secondary">non-execution tasks</span></h3>
+                  <div class="task-list scroll-panel pending" id="b2-internal"></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="block glass-panel depth-1 block-reset" data-block="reset">
+              <header class="block-head">
+                <span class="block-label">Reset</span>
+                <span class="block-time meta-secondary">5–10 min</span>
+              </header>
+              <p class="block-hint meta-secondary">Scan only — urgent items, no execution</p>
+              <textarea id="reset-scan" class="clay-textarea clay-textarea-sm" rows="2" spellcheck="false" placeholder="What needs urgent attention?"></textarea>
+            </article>
+
+            <article class="block glass-panel depth-1 block-sage" data-block="block3">
+              <header class="block-head">
+                <span class="block-label">Block 3</span>
+                <span class="block-time meta-secondary">45 min</span>
+              </header>
+              <p class="block-hint meta-secondary">Move or close — no new work unless critical</p>
+              <div class="task-list scroll-panel pending" id="b3-items"></div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- ZONE 4 — SYSTEM CONTEXT -->
+      <aside class="zone zone-context system-layer" id="zone-context">
+        <section class="glass-panel depth-0" id="section-followups">
+          <div class="section-head">
+            <h2 class="section-title">Waiting On / Blockers</h2>
+            <span class="cap-badge meta-secondary">optional · 3 max</span>
+          </div>
+          <p class="followups-hint">Waiting on approvals, responses, or external blockers only</p>
+          <div class="followups-table scroll-panel">
+            <div class="followups-head meta-secondary">
+              <span>SNOW</span>
+              <span>SENT</span>
+              <span>REPLY</span>
+              <span class="followups-actions-head"></span>
+            </div>
+            <div id="followups-list"></div>
+          </div>
+          <button type="button" class="btn-pill btn-add meta-secondary" id="btn-add-followup">+ Add</button>
+        </section>
+
+        <section class="glass-panel depth-0 section-eod" id="section-eod">
+          <div class="section-head">
+            <h2 class="section-title">End of Day</h2>
+          </div>
+          <div class="eod-grid scroll-panel">
+            <div class="eod-field">
+              <label class="field-label meta-secondary" for="eod-closed">Closed today</label>
+              <textarea id="eod-closed" class="clay-textarea" rows="2" spellcheck="false" placeholder="What got done?"></textarea>
+            </div>
+            <div class="eod-field">
+              <label class="field-label meta-secondary">Still stuck <span class="lane-cap">4 max</span></label>
+              <div id="eod-stuck-list" class="stuck-list"></div>
+              <button type="button" class="btn-pill btn-add btn-add-sm meta-secondary" id="btn-add-stuck">+ Add</button>
+            </div>
+            <div class="eod-field">
+              <label class="field-label meta-secondary">Tomorrow</label>
+              <div class="tomorrow-targets">
+                <input type="text" id="eod-t1" class="clay-input" placeholder="T1" maxlength="120">
+                <input type="text" id="eod-t2" class="clay-input" placeholder="T2" maxlength="120">
+              </div>
+            </div>
+            <div class="eod-field eod-field-wide">
+              <label class="field-label meta-secondary">Tomorrow blockers</label>
+              <div class="followups-table followups-table-sm">
+                <div class="followups-head meta-secondary">
+                  <span>SNOW</span>
+                  <span>SENT</span>
+                  <span>REPLY</span>
+                  <span class="followups-actions-head"></span>
+                </div>
+                <div id="eod-followups-list"></div>
+              </div>
+              <button type="button" class="btn-pill btn-add btn-add-sm meta-secondary" id="btn-add-eod-followup">+ Add</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="recent glass-panel depth-0 collapsed" id="recent-panel">
+          <button type="button" class="recent-toggle" id="recent-toggle" aria-expanded="false">
+            <span class="recent-caret meta-secondary">▼</span>
+            <span class="section-title">Recent Days</span>
+            <span class="recent-hint meta-secondary" id="recent-hint"></span>
+          </button>
+          <div class="recent-body scroll-panel" id="recent-body" hidden></div>
+        </section>
+
+        <div class="context-actions">
+          <button type="button" class="btn-pill btn-fab" id="btn-open-tickets">Tickets</button>
+        </div>
+      </aside>
+    </div>
+
+    <aside class="drawer glass-panel system-layer" id="drawer-tickets" aria-hidden="true">
+      <header class="drawer-head">
+        <h2 class="section-title">Active Tickets</h2>
+        <button type="button" class="btn-icon" id="btn-close-tickets" aria-label="Close tickets">✕</button>
+      </header>
+      <div id="tickets-list" class="tickets-list scroll-panel"></div>
+      <button type="button" class="btn-pill btn-add" id="btn-add-ticket">+ Add ticket</button>
+    </aside>
+  </div>
+
+  <div class="toast glass-panel system-layer" id="toast" role="status" aria-live="polite"></div>
+  <div class="drawer-backdrop system-layer" id="drawer-backdrop" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
